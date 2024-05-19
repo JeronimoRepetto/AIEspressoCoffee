@@ -1,5 +1,5 @@
-# Virtual Assistant
-This repository contains the code for AIExpressoCaffe
+# AI Espresso Coffe
+This repository contains the code for AI Espresso Coffe
 
 ## Setup
 To run the project, you need to:
