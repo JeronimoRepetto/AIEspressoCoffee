@@ -1,10 +1,6 @@
 from openai import OpenAI
 import json
 
-#Clase para utilizar cualquier LLM para procesar un texto
-#Y regresar una funcion a llamar con sus parametros
-#Uso el modelo 0613, pero puedes usar un poco de
-#prompt engineering si quieres usar otro modelo
 class LLM():
     def __init__(self, api_key):
         self.client = OpenAI(api_key=api_key)
@@ -73,6 +69,10 @@ class LLM():
         response_dict = response.to_dict()
         message = response_dict["choices"][0]["message"]
 
+        print('process_functions')
+        print('----------------------------------------------')
+        print('----------------------------------------------')
+        print(response.to_dict())
         print('----------------------------------------------')
         print('----------------------------------------------')
         print(message)
@@ -91,16 +91,11 @@ class LLM():
         
         return None, None, message
     
-    #Una vez que llamamos a la funcion (e.g. obtener clima, encender luz, etc)
-    #Podemos llamar a esta funcion con el msj original, la funcion llamada y su
-    #respuesta, para obtener una respuesta en lenguaje natural (en caso que la
-    #respuesta haya sido JSON por ejemplo
     def process_function_response(self, text, message, function_name, function_response):
         response = self.client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                #Aqui tambien puedes cambiar como se comporta
-                {"role": "system", "content": "Eres un asistente multitarea tu nombre es Topanga y eres cordial conmigo, Jeronimo, tu creador."},
+                {"role": "system", "content": "Eres un asistente como Jarvis de IronMan, debes actuar como el, Pero tu nombre es Topanga y eres de sexo femenino. Yo soy Jero, tu creador, seria como tu Tony Stark."},
                 {"role": "user", "content": text},
                 message,
                 {
@@ -111,17 +106,38 @@ class LLM():
             ],
         )
         response_dict = response.to_dict()
+
+        print('process_function_response')
+        print('----------------------------------------------')
+        print('----------------------------------------------')
+        print(response.to_dict())
+        print('----------------------------------------------')
+        print('----------------------------------------------')
+        print(message)
+        print('----------------------------------------------')
+        print('----------------------------------------------')
+
         return response_dict["choices"][0]["message"]["content"]
     
     def process_normal_response(self, text, message):
      response = self.client.chat.completions.create(
          model="gpt-4o",
          messages=[
-             #Aqui tambien puedes cambiar como se comporta
-             {"role": "system", "content": "Eres un asistente multitarea tu nombre es Topanga y eres cordial conmigo, Jeronimo, tu creador."},
+             {"role": "system", "content": "Eres un asistente como Jarvis de IronMan, debes actuar como el, Pero tu nombre es Topanga y eres de sexo femenino. Yo soy Jero, tu creador, seria como tu Tony Stark."},
              {"role": "user", "content": text},
              message,
          ],
      )
+     
+     print('process_normal_response')
+     print('----------------------------------------------')
+     print('----------------------------------------------')
+     print(response.to_dict())
+     print('----------------------------------------------')
+     print('----------------------------------------------')
+     print(message)
+     print('----------------------------------------------')
+     print('----------------------------------------------')
+
      response_dict = response.to_dict()
      return response_dict["choices"][0]["message"]["content"]

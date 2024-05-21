@@ -24,13 +24,10 @@ def audio():
     audio = request.files.get("audio")
     text = Transcriber(api_key=openai_api_key).transcribe(audio)
     
-    #Utilizar el LLM para ver si llamar una funcion
     llm = LLM(api_key=openai_api_key)
     function_name, args, message = llm.process_functions(text)
     if function_name is not None:
-        #Si se desea llamar una funcion de las que tenemos
         if function_name == "get_weather":
-            #Llamar a la funcion del clima
             function_response = Weather().get(args["ubicacion"])
             function_response = json.dumps(function_response)
             print(f"Respuesta de la funcion: {function_response}")

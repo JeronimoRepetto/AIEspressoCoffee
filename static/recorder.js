@@ -4,8 +4,6 @@ let rec;
 let recordUrl;
 let audioResponseHandler;
 
-//Solo grabo el URL a llamar (e.g. /audio) y el 'handler'
-//o 'callback' a llamar cuando termine la grabacion
 function recorder(url, handler) {
     recordUrl = url;
     if (typeof handler !== "undefined") {
@@ -13,10 +11,7 @@ function recorder(url, handler) {
     }
 }
 
-/**
- * Al ser un proyecto pequeño uso doc.getById como maniaco
- * Si no te gusta, puedes cambiarlo ;)
- */
+
 async function record() {
     try {
         document.getElementById("text").innerHTML = "<i>Grabando...</i>";
@@ -28,7 +23,6 @@ async function record() {
 
         blobs = [];
 
-        //Grabar audio, blabla
         stream = await navigator.mediaDevices.getUserMedia({audio:true, video:false})
         rec = new MediaRecorder(stream);
         rec.ondataavailable = e => {
@@ -77,7 +71,6 @@ function stop() {
     rec.stop();
 }
 
-//Llamar al handler en caso que exista
 function handleAudioResponse(response){
     if (!response || response == null) {
         //TODO subscribe you thief
