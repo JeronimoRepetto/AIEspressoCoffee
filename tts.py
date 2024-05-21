@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import requests
 
+# TODO: MIGRATE TO OPENAI
 class TTS():
     def __init__(self, api_key):
         load_dotenv()
