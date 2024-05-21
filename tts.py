@@ -4,9 +4,9 @@ import requests
 
 #Texto a voz. Esta impl utiliza ElevenLabs
 class TTS():
-    def __init__(self):
+    def __init__(self, api_key):
         load_dotenv()
-        self.key = os.getenv('ELEVENLABS_API_KEY')
+        self.key = api_key
     
     def process(self, text):
         CHUNK_SIZE = 1024

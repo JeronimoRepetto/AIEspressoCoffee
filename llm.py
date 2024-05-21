@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import json
 
 #Clase para utilizar cualquier LLM para procesar un texto
@@ -6,16 +6,15 @@ import json
 #Uso el modelo 0613, pero puedes usar un poco de
 #prompt engineering si quieres usar otro modelo
 class LLM():
-    def __init__(self):
-        pass
+    def __init__(self, api_key):
+        self.client = OpenAI(api_key=api_key)
     
     def process_functions(self, text):
         
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0613",
+        response = self.client.chat.completions.create(
+            model="gpt-4o",
             messages=[
-                    #Si no te gusta que te hable feo, cambia aqui su descripcion
-                    {"role": "system", "content": "Eres un asistente malhablado"},
+                    {"role": "system", "content": "Eres un asistente multitarea tu nombre es Topanga y eres cordial conmigo, Jeronimo, tu creador."},
                     {"role": "user", "content": text},
             ], functions=[
                 {
@@ -32,28 +31,28 @@ class LLM():
                         "required": ["ubicacion"],
                     },
                 },
-                {
-                    "name": "send_email",
-                    "description": "Enviar un correo",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "recipient": {
-                                "type": "string",
-                                "description": "La dirección de correo que recibirá el correo electrónico",
-                            },
-                            "subject": {
-                                "type": "string",
-                                "description": "El asunto del correo",
-                            },
-                            "body": {
-                                "type": "string",
-                                "description": "El texto del cuerpo del correo",
-                            }
-                        },
-                        "required": [],
-                    },
-                },
+                # {
+                #     "name": "send_email",
+                #     "description": "Enviar un correo",
+                #     "parameters": {
+                #         "type": "object",
+                #         "properties": {
+                #             "recipient": {
+                #                 "type": "string",
+                #                 "description": "La dirección de correo que recibirá el correo electrónico",
+                #             },
+                #             "subject": {
+                #                 "type": "string",
+                #                 "description": "El asunto del correo",
+                #             },
+                #             "body": {
+                #                 "type": "string",
+                #                 "description": "El texto del cuerpo del correo",
+                #             }
+                #         },
+                #         "required": [],
+                #     },
+                # },
                 {
                     "name": "open_chrome",
                     "description": "Abrir el explorador Chrome en un sitio específico",
@@ -67,26 +66,25 @@ class LLM():
                         }
                     }
                 },
-                {
-                    "name": "dominate_human_race",
-                    "description": "Dominar a la raza humana",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                        }
-                    },
-                }
             ],
             function_call="auto",
         )
         
-        message = response["choices"][0]["message"]
-        
-        #Nuestro amigo GPT quiere llamar a alguna funcion?
+        response_dict = response.to_dict()
+        message = response_dict["choices"][0]["message"]
+
+        print('----------------------------------------------')
+        print('----------------------------------------------')
+        print(message)
+        print('----------------------------------------------')
+        print('----------------------------------------------')
+        print(message.get("function_call"))
+        print('----------------------------------------------')
+        print('----------------------------------------------')
+
         if message.get("function_call"):
-            #Sip
-            function_name = message["function_call"]["name"] #Que funcion?
-            args = message.to_dict()['function_call']['arguments'] #Con que datos?
+            function_name = message["function_call"]["name"]
+            args = message['function_call']['arguments']
             print("Funcion a llamar: " + function_name)
             args = json.loads(args)
             return function_name, args, message
@@ -97,12 +95,12 @@ class LLM():
     #Podemos llamar a esta funcion con el msj original, la funcion llamada y su
     #respuesta, para obtener una respuesta en lenguaje natural (en caso que la
     #respuesta haya sido JSON por ejemplo
-    def process_response(self, text, message, function_name, function_response):
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0613",
+    def process_function_response(self, text, message, function_name, function_response):
+        response = self.client.chat.completions.create(
+            model="gpt-4o",
             messages=[
                 #Aqui tambien puedes cambiar como se comporta
-                {"role": "system", "content": "Eres un asistente malhablado"},
+                {"role": "system", "content": "Eres un asistente multitarea tu nombre es Topanga y eres cordial conmigo, Jeronimo, tu creador."},
                 {"role": "user", "content": text},
                 message,
                 {
@@ -112,4 +110,18 @@ class LLM():
                 },
             ],
         )
-        return response["choices"][0]["message"]["content"]
+        response_dict = response.to_dict()
+        return response_dict["choices"][0]["message"]["content"]
+    
+    def process_normal_response(self, text, message):
+     response = self.client.chat.completions.create(
+         model="gpt-4o",
+         messages=[
+             #Aqui tambien puedes cambiar como se comporta
+             {"role": "system", "content": "Eres un asistente multitarea tu nombre es Topanga y eres cordial conmigo, Jeronimo, tu creador."},
+             {"role": "user", "content": text},
+             message,
+         ],
+     )
+     response_dict = response.to_dict()
+     return response_dict["choices"][0]["message"]["content"]
