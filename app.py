@@ -16,6 +16,8 @@ load_dotenv()
 openai_api_key = os.getenv('OPENAI_API_KEY')
 elevenlabs_key = os.getenv('ELEVENLABS_API_KEY')
 
+# Inicializar LLM una sola vez
+llm = LLM(api_key=openai_api_key)
 
 # Function to record audio
 def record_audio(duration=5, sample_rate=44100):
@@ -42,7 +44,6 @@ def transcribe_audio(filename):
 # Function to send text to GPT-4 and get a response
 def get_gpt4_response(prompt):
     print("Getting response from GPT-4...")
-    llm = LLM(api_key=openai_api_key)
     function_name, args, message = llm.process_functions(prompt)
     if function_name is not None:
         print(f"Function detected: {function_name}")
@@ -112,7 +113,6 @@ mic = sr.Microphone()
 # Listen for the activation phrase "Okey Topanga"
 def main():
     print("Waiting for the activation phrase...")
-
     while True:
         with mic as source:
             audio = r.listen(source)
