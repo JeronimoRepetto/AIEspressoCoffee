@@ -16,8 +16,6 @@ load_dotenv()
 openai_api_key = os.getenv('OPENAI_API_KEY')
 elevenlabs_key = os.getenv('ELEVENLABS_API_KEY')
 
-# Initialize pygame mixer
-pygame.mixer.init()
 
 # Function to record audio
 def record_audio(duration=5, sample_rate=44100):
@@ -72,6 +70,8 @@ def text_to_speech(text):
 
 # Function to play the audio
 def play_audio(filename):
+    # Initialize pygame mixer
+    pygame.mixer.init()
     if filename:
         print(f"Playing audio file: {filename}")
         try:
@@ -80,6 +80,7 @@ def play_audio(filename):
             while pygame.mixer.music.get_busy():
                 pygame.time.Clock().tick(10)
             print("Playback completed.")
+            pygame.mixer.quit()
         except Exception as e:
             print(f"Error playing the audio: {e}")
     else:

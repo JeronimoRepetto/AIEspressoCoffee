@@ -15,6 +15,7 @@ class TTS():
         file_path = os.path.join("static", file_name)
 
         if os.path.exists(file_path):
+            print('eliminando ' + file_path)  
             os.remove(file_path)
 
         headers = {
