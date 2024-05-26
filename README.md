@@ -1,5 +1,5 @@
-# AI Espresso Coffe
-This repository contains the code for AI Espresso Coffe
+# Topanga AI Assistant
+This repository contains the code for AI Assistant
 
 ## Setup
 To run the project, you need to:
