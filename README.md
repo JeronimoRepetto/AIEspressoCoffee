@@ -23,8 +23,5 @@ The project has some things you might want to modify, for example:
 ## Execution
 - ```python app.py```
 
-## Licenses
-- Microphone image by Freepik
-
 ## Inspiration and Base Code
 https://github.com/ringa-tech/asistente-virtual
