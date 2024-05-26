@@ -7,6 +7,7 @@ To run the project, you need to:
 - Optional: Create a virtual environment
 - Install the dependencies by running:
 	- ```pip install -r requirements.txt```
+	- ```pip install setuptools```
 - Create a file called ```.env```
 	- In the file, place the keys. For the project as shown in the video (and this repository), I am using:
 	- ```OPENAI_API_KEY=XXXXXX```
@@ -20,11 +21,7 @@ The project has some things you might want to modify, for example:
 - In the PcCommand class, it opens Chrome by looking for it in a fixed path for Windows. You can modify it to look for the executable on Mac / Linux.
 
 ## Execution
-- This project uses Flask. You can start the server in debug mode by default on port 5000 with the command:
-	- ```flask --app app run --debug```
-	- In your browser, go to http://localhost:5000
-	- Click to start recording (it will ask for permission). Click to stop recording
-	- Wait and see how it takes over the world
+- ```python app.py```
 
 ## Licenses
 - Microphone image by Freepik
